@@ -1,49 +1,39 @@
 #include "qrng-provider.h"
 #include <string.h>
 
-struct qrng_rand_ctx_st
-{
-    const OSSL_CORE_HANDLE *core;
-    CRYPTO_RWLOCK *lock;
-};
-
-typedef struct qrng_rand_ctx_st QRNG_RAND_CTX;
-
-static OSSL_FUNC_rand_newctx_fn qrng_rand_newctx;
-static OSSL_FUNC_rand_freectx_fn qrng_rand_freectx;
-static OSSL_FUNC_rand_instantiate_fn qrng_rand_instantiate;
-static OSSL_FUNC_rand_uninstantiate_fn qrng_rand_uninstantiate;
-static OSSL_FUNC_rand_generate_fn qrng_rand_generate;
-static OSSL_FUNC_rand_enable_locking_fn qrng_rand_enable_locking;
-static OSSL_FUNC_rand_lock_fn qrng_rand_lock;
-static OSSL_FUNC_rand_unlock_fn qrng_rand_unlock;
-static OSSL_FUNC_rand_gettable_ctx_params_fn qrng_rand_gettable_ctx_params;
-static OSSL_FUNC_rand_get_ctx_params_fn qrng_rand_get_ctx_params;
-
 static void *
 qrng_rand_newctx(void *provctx, void *parent,
                  const OSSL_DISPATCH *parent_calls)
 {
-    QRNG_PROVIDER_CTX *cprov = provctx;
+    DBG("qrng_rand_newctx started\n");
     QRNG_RAND_CTX *rand = OPENSSL_zalloc(sizeof(QRNG_RAND_CTX));
 
-    if (rand == NULL)
+    if (rand == NULL){
+        DBG("qrng_rand_newctx returning\n");
         return NULL;
+    }
 
-    rand->core = cprov->core;
+    QRNG_PROVIDER_CTX *cprov = provctx;
+    DBG("qrng_rand_newctx reached second state\n");
+
+    DBG("qrng_rand_newctx returning\n");
     return rand;
 }
 
 static void
 qrng_rand_freectx(void *ctx)
 {
+    DBG("qrng_rand_freectx started\n");
     QRNG_RAND_CTX *rand = ctx;
 
-    if (rand == NULL)
+    if (rand == NULL){
+        DBG("qrng_rand_newctx returning\n");
         return;
+    }
 
     CRYPTO_THREAD_lock_free(rand->lock);
     OPENSSL_clear_free(rand, sizeof(QRNG_RAND_CTX));
+    DBG("qrng_rand_newctx returning\n");
 }
 
 static int
@@ -52,12 +42,16 @@ qrng_rand_instantiate(void *ctx, unsigned int strength,
                       const unsigned char *pstr, size_t pstr_len,
                       const OSSL_PARAM params[])
 {
+    DBG("qrng_rand_instantiate started\n");
+    DBG("qrng_rand_newctx returning\n");
     return 1;
 }
 
 static int
 qrng_rand_uninstantiate(void *ctx)
 {
+    DBG("qrng_rand_uninstantiate started\n");
+    DBG("qrng_rand_uninstantiate returning\n");
     return 1;
 }
 
@@ -66,6 +60,7 @@ qrng_rand_generate(void *ctx, unsigned char *out, size_t outlen,
                    unsigned int strength, int prediction_resistance,
                    const unsigned char *adin, size_t adinlen)
 {
+    DBG("qrng_rand_generate started\n");
     QRNG_RAND_CTX *rand = ctx;
 
     while (outlen > 0)
@@ -76,25 +71,33 @@ qrng_rand_generate(void *ctx, unsigned char *out, size_t outlen,
         out += sizeof(b);
     }
 
+    DBG("qrng_rand_generate returning\n");
     return 1;
 }
 
 static int
 qrng_rand_enable_locking(void *ctx)
 {
+    DBG("qrng_rand_enable_locking started\n");
     QRNG_RAND_CTX *rand = ctx;
 
     rand->lock = CRYPTO_THREAD_lock_new();
+    DBG("qrng_rand_enable_locking returning\n");
     return 1;
 }
 
 static int
 qrng_rand_lock(void *ctx)
 {
+    DBG("qrng_rand_lock started\n");
     QRNG_RAND_CTX *rand = ctx;
 
-    if (rand == NULL || rand->lock == NULL)
+    if (rand == NULL || rand->lock == NULL){
+        DBG("qrng_rand_lock returning\n");
         return 1;
+    }
+    
+    DBG("qrng_rand_lock returning\n");
     return CRYPTO_THREAD_write_lock(rand->lock);
 }
 
