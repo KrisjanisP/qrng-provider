@@ -1,12 +1,11 @@
 #include "qrng-provider.h"
 
-#define QRNG_PROV_NAME "RQRNG provider"
-
+#define QRNG_PROV_NAME "RQRNG"
 
 extern const OSSL_DISPATCH qrnd_rand_functions[];
 
 static const OSSL_ALGORITHM qrnd_rands[] = {
-    { "QRNG", "provider=rqrng", qrnd_rand_functions },
+    { "RQRNG", "provider=RQRNG", NULL },
     { NULL, NULL, NULL }
 };
 
