@@ -12,6 +12,12 @@ struct QRNG_PROVIDER_CTX {
 };
 
 
+
+static void qrng_unquery_operation(void *provctx, int operation_id, const OSSL_ALGORITHM *alg)
+{
+    OPENSSL_free((void *)alg);
+}
+
 static const OSSL_ALGORITHM* qrng_query_operation(void* provctx, int operation_id, const int* no_store){
     return NULL;
 }
@@ -29,6 +35,7 @@ static int qrng_get_params(void *provctx, OSSL_PARAM params[])
 
 static const OSSL_DISPATCH qrng_dispatch_table[] = {
     { OSSL_FUNC_PROVIDER_QUERY_OPERATION, (void (*)(void))qrng_query_operation },
+    { OSSL_FUNC_PROVIDER_UNQUERY_OPERATION, (void (*)(void))qrng_unquery_operation},
     { OSSL_FUNC_PROVIDER_GET_PARAMS, (void (*)(void))qrng_get_params },
     { 0, NULL }
 };
