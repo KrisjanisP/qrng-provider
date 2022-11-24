@@ -1,2 +1,2 @@
 mkdir -p ./lib
-gcc -shared ./src/qrng-provider.c ./src/qrng-provider-rand.c -o ./lib/librqrng.so
+gcc -shared ./src/qrng-provider-rand.c ./src/qrng-provider.c  -o ./lib/librqrng.so

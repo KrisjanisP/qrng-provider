@@ -2,10 +2,10 @@
 
 #define QRNG_PROV_NAME "RQRNG"
 
-extern const OSSL_DISPATCH qrnd_rand_functions[];
+extern const OSSL_DISPATCH qrng_rand_functions[];
 
-static const OSSL_ALGORITHM qrnd_rands[] = {
-    { "RQRNG", "provider=RQRNG", NULL },
+static const OSSL_ALGORITHM qrng_rands[] = {
+    { "RQRNG", "provider=RQRNG", qrng_rand_functions, "remote qunatum random number generation" },
     { NULL, NULL, NULL }
 };
 
@@ -13,7 +13,7 @@ static const OSSL_ALGORITHM *qrng_query_operation(void *provctx, int operation_i
 {
     switch(operation_id) {
         case OSSL_OP_RAND:
-            return qrnd_rands;
+            return qrng_rands;
     }
     return NULL;
 }
