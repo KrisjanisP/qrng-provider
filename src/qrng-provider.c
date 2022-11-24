@@ -2,14 +2,26 @@
 
 #define QRNG_PROV_NAME "RQRNG provider"
 
-static void qrng_unquery_operation(void *provctx, int operation_id, const OSSL_ALGORITHM *alg)
-{
-    OPENSSL_free((void *)alg);
-}
+
+extern const OSSL_DISPATCH qrnd_rand_functions[];
+
+static const OSSL_ALGORITHM qrnd_rands[] = {
+    { "QRNG", "provider=rqrng", qrnd_rand_functions },
+    { NULL, NULL, NULL }
+};
 
 static const OSSL_ALGORITHM *qrng_query_operation(void *provctx, int operation_id, const int *no_store)
 {
+    switch(operation_id) {
+        case OSSL_OP_RAND:
+            return qrnd_rands;
+    }
     return NULL;
+}
+
+static void qrng_unquery_operation(void *provctx, int operation_id, const OSSL_ALGORITHM *alg)
+{
+    OPENSSL_free((void *)alg);
 }
 
 static int qrng_get_params(void *provctx, OSSL_PARAM params[])
