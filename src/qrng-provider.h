@@ -5,7 +5,6 @@
 #include <openssl/params.h>
 #define DBG(...) /*fprintf(stderr, __VA_ARGS__); fflush(stderr)*/
 
-
 struct qrng_rand_ctx_st
 {
     const OSSL_CORE_HANDLE *core;

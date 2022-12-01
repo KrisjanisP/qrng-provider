@@ -5,18 +5,18 @@
 extern const OSSL_DISPATCH qrng_rand_functions[];
 
 static const OSSL_ALGORITHM qrng_rands[] = {
-    { "CTR-DRBG", "provider=RQRNG", qrng_rand_functions, "remote quantum random number generation" },
-    { NULL, NULL, NULL }
-};
+    {"CTR-DRBG", "provider=RQRNG", qrng_rand_functions, "remote quantum random number generation"},
+    {NULL, NULL, NULL}};
 
 static const OSSL_ALGORITHM *qrng_query_operation(void *provctx, int operation_id, int *no_store)
 {
     DBG("querying operation started\n");
 
-    switch(operation_id) {
-        case OSSL_OP_RAND:
-            DBG("querying operation returning\n");
-            return qrng_rands;
+    switch (operation_id)
+    {
+    case OSSL_OP_RAND:
+        DBG("querying operation returning\n");
+        return qrng_rands;
     }
 
     DBG("querying operation returning\n");
@@ -27,7 +27,7 @@ static void qrng_unquery_operation(void *provctx, int operation_id, const OSSL_A
 {
     DBG("unquerying operation %d started\n", operation_id);
 
-    if(operation_id!=OSSL_OP_RAND)
+    if (operation_id != OSSL_OP_RAND)
         OPENSSL_free((void *)alg);
 
     DBG("unquerying operation returning\n");

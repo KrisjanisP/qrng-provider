@@ -8,7 +8,8 @@ qrng_rand_newctx(void *provctx, void *parent,
     DBG("qrng_rand_newctx started\n");
     QRNG_RAND_CTX *rand = OPENSSL_zalloc(sizeof(QRNG_RAND_CTX));
 
-    if (rand == NULL){
+    if (rand == NULL)
+    {
         DBG("qrng_rand_newctx returning\n");
         return NULL;
     }
@@ -26,7 +27,8 @@ qrng_rand_freectx(void *ctx)
     DBG("qrng_rand_freectx started\n");
     QRNG_RAND_CTX *rand = ctx;
 
-    if (rand == NULL){
+    if (rand == NULL)
+    {
         DBG("qrng_rand_newctx returning\n");
         return;
     }
@@ -92,11 +94,12 @@ qrng_rand_lock(void *ctx)
     DBG("qrng_rand_lock started\n");
     QRNG_RAND_CTX *rand = ctx;
 
-    if (rand == NULL || rand->lock == NULL){
+    if (rand == NULL || rand->lock == NULL)
+    {
         DBG("qrng_rand_lock returning\n");
         return 1;
     }
-    
+
     DBG("qrng_rand_lock returning\n");
     return CRYPTO_THREAD_write_lock(rand->lock);
 }
