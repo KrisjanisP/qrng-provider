@@ -1,23 +1,18 @@
 #include "qrng-provider.h"
 #include <string.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <fcntl.h>
+#include <errno.h>
+extern int errno;
+
+#define DEVICE_NAME "/dev/qrandom0"
 
 static void *
 qrng_rand_newctx(void *provctx, void *parent,
                  const OSSL_DISPATCH *parent_calls)
 {
-    DBG("qrng_rand_newctx started\n");
     QRNG_RAND_CTX *rand = OPENSSL_zalloc(sizeof(QRNG_RAND_CTX));
-
-    if (rand == NULL)
-    {
-        DBG("qrng_rand_newctx returning\n");
-        return NULL;
-    }
-
-    QRNG_PROVIDER_CTX *cprov = provctx;
-    DBG("qrng_rand_newctx reached second state\n");
-
-    DBG("qrng_rand_newctx returning\n");
     return rand;
 }
 
@@ -63,17 +58,21 @@ qrng_rand_generate(void *ctx, unsigned char *out, size_t outlen,
                    const unsigned char *adin, size_t adinlen)
 {
     DBG("qrng_rand_generate started\n");
-    QRNG_RAND_CTX *rand = ctx;
 
-    while (outlen > 0)
+    int fd = open(DEVICE_NAME, O_RDONLY);
+     
+    if (fd ==-1)
     {
-        char b = 'a'; // TODO: replace this lmao
-        memcpy(out, &b, sizeof(b));
-        outlen -= sizeof(b);
-        out += sizeof(b);
+        DBG("Error Number % d\n", errno);  
+        return 0;      
     }
 
+    read(fd,out,outlen);
+
+    close(fd);
+    
     DBG("qrng_rand_generate returning\n");
+
     return 1;
 }
 
