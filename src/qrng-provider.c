@@ -5,7 +5,7 @@
 extern const OSSL_DISPATCH qrng_rand_functions[];
 
 static const OSSL_ALGORITHM qrng_rands[] = {
-    { "CTR-DRBG", "provider=RQRNG", qrng_rand_functions, "remote qunatum random number generation" },
+    { "CTR-DRBG", "provider=RQRNG", qrng_rand_functions, "remote quantum random number generation" },
     { NULL, NULL, NULL }
 };
 
