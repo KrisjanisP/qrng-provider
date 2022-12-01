@@ -10,27 +10,19 @@ static const OSSL_ALGORITHM qrng_rands[] = {
 
 static const OSSL_ALGORITHM *qrng_query_operation(void *provctx, int operation_id, int *no_store)
 {
-    DBG("querying operation started\n");
-
     switch (operation_id)
     {
     case OSSL_OP_RAND:
-        DBG("querying operation returning\n");
         return qrng_rands;
     }
-
-    DBG("querying operation returning\n");
     return NULL;
 }
 
 static void qrng_unquery_operation(void *provctx, int operation_id, const OSSL_ALGORITHM *alg)
 {
-    DBG("unquerying operation %d started\n", operation_id);
-
     if (operation_id != OSSL_OP_RAND)
         OPENSSL_free((void *)alg);
 
-    DBG("unquerying operation returning\n");
 }
 
 static int qrng_get_params(void *provctx, OSSL_PARAM params[])

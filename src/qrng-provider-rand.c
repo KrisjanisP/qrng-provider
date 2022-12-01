@@ -19,18 +19,13 @@ qrng_rand_newctx(void *provctx, void *parent,
 static void
 qrng_rand_freectx(void *ctx)
 {
-    DBG("qrng_rand_freectx started\n");
     QRNG_RAND_CTX *rand = ctx;
 
     if (rand == NULL)
-    {
-        DBG("qrng_rand_newctx returning\n");
         return;
-    }
 
     CRYPTO_THREAD_lock_free(rand->lock);
     OPENSSL_clear_free(rand, sizeof(QRNG_RAND_CTX));
-    DBG("qrng_rand_newctx returning\n");
 }
 
 static int
@@ -39,16 +34,12 @@ qrng_rand_instantiate(void *ctx, unsigned int strength,
                       const unsigned char *pstr, size_t pstr_len,
                       const OSSL_PARAM params[])
 {
-    DBG("qrng_rand_instantiate started\n");
-    DBG("qrng_rand_newctx returning\n");
     return 1;
 }
 
 static int
 qrng_rand_uninstantiate(void *ctx)
 {
-    DBG("qrng_rand_uninstantiate started\n");
-    DBG("qrng_rand_uninstantiate returning\n");
     return 1;
 }
 
@@ -57,21 +48,12 @@ qrng_rand_generate(void *ctx, unsigned char *out, size_t outlen,
                    unsigned int strength, int prediction_resistance,
                    const unsigned char *adin, size_t adinlen)
 {
-    DBG("qrng_rand_generate started\n");
-
     int fd = open(DEVICE_NAME, O_RDONLY);
      
-    if (fd ==-1)
-    {
-        DBG("Error Number % d\n", errno);  
-        return 0;      
-    }
+    if (fd ==-1) return 0;
 
     read(fd,out,outlen);
-
     close(fd);
-    
-    DBG("qrng_rand_generate returning\n");
 
     return 1;
 }
@@ -79,27 +61,19 @@ qrng_rand_generate(void *ctx, unsigned char *out, size_t outlen,
 static int
 qrng_rand_enable_locking(void *ctx)
 {
-    DBG("qrng_rand_enable_locking started\n");
     QRNG_RAND_CTX *rand = ctx;
-
     rand->lock = CRYPTO_THREAD_lock_new();
-    DBG("qrng_rand_enable_locking returning\n");
     return 1;
 }
 
 static int
 qrng_rand_lock(void *ctx)
 {
-    DBG("qrng_rand_lock started\n");
     QRNG_RAND_CTX *rand = ctx;
 
     if (rand == NULL || rand->lock == NULL)
-    {
-        DBG("qrng_rand_lock returning\n");
         return 1;
-    }
 
-    DBG("qrng_rand_lock returning\n");
     return CRYPTO_THREAD_write_lock(rand->lock);
 }
 
