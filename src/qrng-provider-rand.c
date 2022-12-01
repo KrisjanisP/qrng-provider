@@ -48,6 +48,7 @@ qrng_rand_generate(void *ctx, unsigned char *out, size_t outlen,
                    unsigned int strength, int prediction_resistance,
                    const unsigned char *adin, size_t adinlen)
 {
+    //printf("reading %d bytes from provider.\n", outlen);
     int fd = open(DEVICE_NAME, O_RDONLY);
      
     if (fd ==-1) return 0;
