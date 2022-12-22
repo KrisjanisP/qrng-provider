@@ -8,7 +8,7 @@ $(LIB_DIR)/librqrng.so: $(SRC_DIR)/qrng-provider-rand.c $(SRC_DIR)/qrng-provider
 	mkdir -p $(LIB_DIR)
 	gcc -shared -fPIC $^ -o $@
 
-install: $(LIB_DIR)/libqrng.so $(CNF_DIR)/modified.cnf
+install: $(LIB_DIR)/librqrng.so $(CNF_DIR)/modified.cnf
 	cp $(LIB_DIR)/librqrng.so /usr/lib/librqrng.so
 	cp $(CNF_DIR)/modified.cnf /etc/ssl/openssl.cnf
 	cp $(CNF_DIR)/modified.cnf /usr/local/ssl/openssl.cnf
