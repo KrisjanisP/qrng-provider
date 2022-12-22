@@ -1,6 +1,6 @@
 LIB_DIR=$(CURDIR)/lib
 SRC_DIR=$(CURDIR)/src
-CNF_DIR=$(CURDIR)/cnf
+CNF_DIR=$(CURDIR)/conf
 
 compile: $(LIB_DIR)/libqrng.so
 
