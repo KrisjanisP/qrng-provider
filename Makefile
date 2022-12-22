@@ -21,3 +21,4 @@ $(CNF_DIR)/default.cnf:
 
 uninstall: $(CNF_DIR)/default.cnf
 	cp $(CNF_DIR)/default.cnf /etc/ssl/openssl.cnf
+	cp $(CNF_DIR)/default.cnf /usr/local/ssl/openssl.cnf
