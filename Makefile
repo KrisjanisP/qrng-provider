@@ -15,3 +15,9 @@ install: $(LIB_DIR)/librqrng.so $(CNF_DIR)/modified.cnf
 
 $(CNF_DIR)/modified.cnf: $(CNF_DIR)/default.cnf $(CNF_DIR)/old-providers.txt $(CNF_DIR)/new-providers.txt
 	cd $(CNF_DIR); python3 gen-conf.py
+
+$(CNF_DIR)/default.cnf:
+	cp /etc/ssl/openssl.cnf $(CNF_DIR)/default.cnf
+
+uninstall: $(CNF_DIR)/default.cnf
+	cp $(CNF_DIR)/default.cnf /etc/ssl/openssl.cnf
