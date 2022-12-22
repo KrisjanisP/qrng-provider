@@ -2,9 +2,9 @@ LIB_DIR=$(CURDIR)/lib
 SRC_DIR=$(CURDIR)/src
 CNF_DIR=$(CURDIR)/conf
 
-compile: $(LIB_DIR)/libqrng.so
+compile: $(LIB_DIR)/librqrng.so
 
-$(LIB_DIR)/libqrng.so: $(SRC_DIR)/qrng-provider-rand.c $(SRC_DIR)/qrng-provider.c
+$(LIB_DIR)/librqrng.so: $(SRC_DIR)/qrng-provider-rand.c $(SRC_DIR)/qrng-provider.c
 	mkdir -p $(LIB_DIR)
 	gcc -shared -fPIC $^ -o $@
 
